@@ -1,0 +1,28 @@
+# WORKFLOW 03 - Manual trigger with inputs (basic)
+# Purpose: a "Run workflow" button in the Actions tab with a form.
+
+name: 03 Manual Trigger With Inputs
+
+on:
+  workflow_dispatch:            # Enables the manual "Run workflow" button
+    inputs:                     # Form fields shown to the person clicking
+      person:
+        description: "Who should we greet?"   # Label shown in the form
+        required: true                        # Must be filled in
+        default: "Student"                    # Pre-filled value
+      environment:
+        description: "Target environment"
+        type: choice                          # Dropdown list
+        options: [dev, staging, production]   # Allowed choices
+        default: dev
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      # ${{ ... }} is an "expression"; inputs.* reads the form values
+      - name: Greet the person
+        run: echo "Hello ${{ inputs.person }}!"
+
+      - name: Show chosen environment
+        run: echo "Deploying to ${{ inputs.environment }}"

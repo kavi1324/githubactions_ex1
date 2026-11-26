@@ -1,0 +1,31 @@
+# WORKFLOW 06 - Node.js CI (beginner)
+# Purpose: install dependencies, build and test a Node/React project.
+
+name: 06 Node CI
+
+on:
+  push:
+    branches: [main]            # Only run on pushes to main
+  pull_request:                 # And on every pull request
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:                   # "with" passes inputs to an action
+          node-version: 20      # Node version to install
+          cache: npm            # Built-in caching of ~/.npm
+
+      - name: Install dependencies
+        run: npm ci             # Clean, reproducible install from package-lock.json
+
+      - name: Build project
+        run: npm run build --if-present   # Skip silently if no build script
+
+      - name: Run tests
+        run: npm test --if-present        # Skip silently if no test script

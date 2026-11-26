@@ -1,0 +1,33 @@
+# WORKFLOW 04 - Environment variables at 3 levels (basic)
+# Purpose: understand variable scope: workflow -> job -> step.
+
+name: 04 Environment Variables
+
+on: [push]
+
+# Workflow-level env: available to EVERY job and step
+env:
+  APP_NAME: "MyApp"
+
+jobs:
+  show-env:
+    runs-on: ubuntu-latest
+    # Job-level env: available to every step in THIS job only
+    env:
+      APP_VERSION: "1.0.0"
+    steps:
+      - name: Print variables from all levels
+        # Step-level env: available to THIS step only
+        env:
+          STEP_MESSAGE: "I only exist in this step"
+        run: |
+          echo "App: $APP_NAME"            # from workflow level
+          echo "Version: $APP_VERSION"      # from job level
+          echo "Note: $STEP_MESSAGE"        # from step level
+
+      - name: Use built-in GitHub variables
+        run: |
+          echo "Repo: $GITHUB_REPOSITORY"   # owner/repo
+          echo "Branch: $GITHUB_REF_NAME"   # branch or tag name
+          echo "Commit: $GITHUB_SHA"        # full commit hash
+          echo "Actor: $GITHUB_ACTOR"       # user who triggered the run

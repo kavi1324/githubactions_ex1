@@ -1,0 +1,15 @@
+# WORKFLOW 01 - Hello World (very basic)
+# Purpose: the smallest possible workflow. Prints a message.
+# Place all workflow files in: .github/workflows/
+
+name: 01 Hello World            # Name shown in the GitHub "Actions" tab
+
+on:                             # "on" = what event starts this workflow
+  push:                         # Run whenever someone pushes code
+
+jobs:                           # A workflow is made of one or more jobs
+  say-hello:                    # Job ID (any unique name, no spaces)
+    runs-on: ubuntu-latest      # The virtual machine (runner) the job runs on
+    steps:                      # Steps run one after another
+      - name: Print greeting    # Human-readable step name
+        run: echo "Hello, World from GitHub Actions!"   # Shell command to run
